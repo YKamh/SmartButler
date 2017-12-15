@@ -1,0 +1,49 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '25.0.2'
+
+    defaultConfig {
+        applicationId "com.example.administrator.smartbutler"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi', "x86" //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    compile 'com.android.support:design:26.0.0-alpha1'
+    compile 'com.android.support:support-v4:26.0.0-alpha1'
+    //Bugly
+    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    compile 'com.tencent.bugly:crashreport:latest.release'
+    //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+    //Bmob
+    compile 'cn.bmob.android:bmob-sdk:3.5.5'
+    //CircleImageView
+    compile ('de.hdodenhof:circleimageview:2.2.0'){
+        exclude group: 'io.reactivex'
+    }
+    //https://github.com/kymjs/RxVolley
+    compile ('com.kymjs.rxvolley:rxvolley:1.1.4'){
+        exclude group: 'io.reactivex'
+    }
+    //Picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+}

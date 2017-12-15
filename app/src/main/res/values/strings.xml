@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">SmartButler</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="butler_service">服务管家</string>
+    <string name="wechat_select">微信精选</string>
+    <string name="beauties_community">美女社区</string>
+    <string name="personal_center">个人中心</string>
+    <string name="setting">设置</string>
+    <string name="text_user_name">用户名</string>
+    <string name="text_age">年龄:</string>
+    <string name="text_desc">简介:</string>
+    <string name="text_boy">男</string>
+    <string name="text_girl_f">女</string>
+    <string name="text_password">密码</string>
+    <string name="text_password_again">再次输入一次</string>
+    <string name="text_email">邮箱</string>
+    <string name="text_register_remind">注册成功需要前往邮箱认证，否则无法登录！</string>
+    <string name="text_registered">注册</string>
+    <string name="login">登录</string>
+    <string name="registered">注册</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="change_password">修改密码</string>
+    <string name="old_pass">旧密码</string>
+    <string name="new_pass">新密码</string>
+    <string name="input_pass_again">再次输入密码</string>
+    <string name="logining">正在登陆</string>
+    <string name="edit_data">编辑资料</string>
+    <string name="name">姓名：</string>
+    <string name="gender">性别:</string>
+    <string name="logistics_query">物流查询</string>
+    <string name="confirm_change">确定修改</string>
+    <string name="location_query">归属地查询</string>
+    <string name="logout">退出登录</string>
+    <string name="can_not_input_null">输入框不能为空</string>
+    <string name="take_photo">拍照</string>
+    <string name="picture">图库</string>
+    <string name="cancel">取消</string>
+    <string name="query">查询</string>
+    <string name="logistics_company">物流公司</string>
+    <string name="logistics_number">物流单号</string>
+    <string name="attribution_query">归属地查询</string>
+    <string name="plase_input_phone_number">请输入号码</string>
+    <string name="attribution">归属地</string>
+    <string name="send">发送</string>
+</resources>
