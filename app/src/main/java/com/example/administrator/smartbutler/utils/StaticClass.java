@@ -28,7 +28,7 @@ public class StaticClass {
     //聚合数据-微信精选Key
     public static final String WE_CHAT_KEY = "78f723dccf85aea324a3cf0daac97f35";
     //妹子接口
-    public static final String Girl_URL = "http://gank.io/api/search/query/listview/category/福利/count/50/page/1";
+    public static final String Girl_URL = "http://gank.io/api/data/%E7%A6%8F%E5%88%A9/30/1";
 
 
 //    http://v.juhe.cn/exp/index?key=405cac9914c0b2e7369919b8a83a0238&com=sf&no=575677355677
