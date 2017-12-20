@@ -36,8 +36,9 @@
     <string name="query">查询</string>
     <string name="logistics_company">物流公司</string>
     <string name="attribution_query">归属地查询</string>
-    <string name="plase_input_phone_number">请输入号码</string>
+    <string name="please_input_phone_number">请输入号码</string>
     <string name="attribution">归属地</string>
     <string name="send">发送</string>
     <string name="text_welfare">福利</string>
+    <string name="text_setting_title_1">语音播报</string>
 </resources>

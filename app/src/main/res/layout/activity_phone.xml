@@ -10,7 +10,7 @@
         android:id="@+id/et_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/plase_input_phone_number"/>
+        android:hint="@string/please_input_phone_number"/>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -23,6 +23,12 @@ android {
     }
 }
 
+repositories{
+    flatDir{
+        dirs 'libs'
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
@@ -38,15 +44,17 @@ dependencies {
     //Bmob
     compile 'cn.bmob.android:bmob-sdk:3.5.5'
     //CircleImageView
-    compile ('de.hdodenhof:circleimageview:2.2.0'){
+    compile('de.hdodenhof:circleimageview:2.2.0') {
         exclude group: 'io.reactivex'
     }
     //https://github.com/kymjs/RxVolley
-    compile ('com.kymjs.rxvolley:rxvolley:1.1.4'){
+    compile('com.kymjs.rxvolley:rxvolley:1.1.4') {
         exclude group: 'io.reactivex'
     }
     //Picasso
     compile 'com.squareup.picasso:picasso:2.5.2'
     //photoview
     compile 'com.github.chrisbanes:PhotoView:1.3.0'
+    implementation files('libs/Msc.jar')
+    implementation files('libs/Sunflower.jar')
 }

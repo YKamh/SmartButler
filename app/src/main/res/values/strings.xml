@@ -41,8 +41,12 @@
     <string name="logistics_company">物流公司</string>
     <string name="logistics_number">物流单号</string>
     <string name="attribution_query">归属地查询</string>
-    <string name="plase_input_phone_number">请输入号码</string>
+    <string name="please_input_phone_number">请输入号码</string>
     <string name="attribution">归属地</string>
     <string name="send">发送</string>
     <string name="text_welfare">福利</string>
+    <string name="text_setting_title_1">语音播报</string>
+    <string name="text_setting_content_1">开启之后与服务管家对讲语音播报</string>
+    <string name="text_setting_title_2">智能短信提醒</string>
+    <string name="text_setting_content_2">开启之后收到短信将弹框提示</string>
 </resources>
