@@ -41,4 +41,6 @@
     <string name="send">发送</string>
     <string name="text_welfare">福利</string>
     <string name="text_setting_title_1">语音播报</string>
+    <string name="text_setting_title_3">检测版本</string>
+    <string name="download_update">下载更新</string>
 </resources>

@@ -49,4 +49,7 @@
     <string name="text_setting_content_1">开启之后与服务管家对讲语音播报</string>
     <string name="text_setting_title_2">智能短信提醒</string>
     <string name="text_setting_content_2">开启之后收到短信将弹框提示</string>
+    <string name="text_setting_title_3">检测版本</string>
+    <string name="text_setting_content_3">检查是否有新版本提示下载</string>
+    <string name="download_update">下载更新</string>
 </resources>

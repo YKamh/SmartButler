@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+    <!--语音播报-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
-
+    <!--短信提醒-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -78,6 +78,40 @@
             android:layout_marginLeft="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <!--检测版本-->
+    <LinearLayout
+        android:id="@+id/ll_update"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingRight="15dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_setting_title_3"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_setting_content_3"
+                android:textSize="14sp"
+                android:layout_marginTop="5dp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

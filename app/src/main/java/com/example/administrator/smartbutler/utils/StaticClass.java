@@ -33,6 +33,8 @@ public class StaticClass {
     public static final String VOICE_KEY = "5a348ee1";
     //短信Action
     public static final String SMS_ACTION = "android.provider.Telephony.SMS_RECEIVED";
+    //版本更新
+    public static final String CHECK_UPDATE_URL = "http://192.168.147.110:8080/kamh/config.json";
 
 
 //    http://v.juhe.cn/exp/index?key=405cac9914c0b2e7369919b8a83a0238&com=sf&no=575677355677
