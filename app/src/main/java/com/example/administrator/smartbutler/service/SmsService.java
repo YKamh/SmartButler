@@ -10,7 +10,7 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.telephony.SmsMessage;
-import android.view.PixelCopy;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -19,14 +19,16 @@ import android.widget.TextView;
 import com.example.administrator.smartbutler.R;
 import com.example.administrator.smartbutler.utils.L;
 import com.example.administrator.smartbutler.utils.StaticClass;
+import com.example.administrator.smartbutler.view.DispathchLinearLayout;
 
 /**
  * Created by Administrator on 2017/12/16.
  */
 
-public class SmsService extends Service implements View.OnClickListener{
+public class SmsService extends Service implements View.OnClickListener, DispathchLinearLayout.DispatchKeyEventListener{
 
     private SmsReceiver mSmsReceiver;
+    private HomeWatchReceiver mHomeWatchReceiver;
     //发件人号码
     private String smsPhone;
     //短信内容
@@ -37,7 +39,7 @@ public class SmsService extends Service implements View.OnClickListener{
     //布局参数
     private WindowManager.LayoutParams mLayoutParams;
     //View
-    private View mView;
+    private DispathchLinearLayout mView;
 
     private TextView tv_phone;
     private TextView tv_content;
@@ -68,6 +70,10 @@ public class SmsService extends Service implements View.OnClickListener{
         intent.setPriority(Integer.MAX_VALUE);
         //注册广播
         registerReceiver(mSmsReceiver, intent);
+
+        mHomeWatchReceiver = new HomeWatchReceiver();
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        registerReceiver(mHomeWatchReceiver, intentFilter);
     }
 
     @Override
@@ -75,6 +81,7 @@ public class SmsService extends Service implements View.OnClickListener{
         super.onDestroy();
         L.i("stop service");
         unregisterReceiver(mSmsReceiver);
+        unregisterReceiver(mHomeWatchReceiver);
     }
 
     @Override
@@ -97,6 +104,20 @@ public class SmsService extends Service implements View.OnClickListener{
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("smsBody", "");
         startActivity(intent);
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        //判断是否是按返回键
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK){
+            L.i("我按了Back键");
+            if (mView.getParent() != null){
+                wm.removeView(mView);
+            }else{
+                return true;
+            }
+        }
+        return false;
     }
 
     //短信广播
@@ -123,6 +144,25 @@ public class SmsService extends Service implements View.OnClickListener{
         }
     }
 
+    public static final String SYSTEM_DIALOG_RESON_KEY = "reason";
+    //监听home键的广播接收器
+    class HomeWatchReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)){
+                String reason = intent.getStringExtra(SYSTEM_DIALOG_RESON_KEY);
+                if (SYSTEM_DIALOG_RESON_KEY.equals(reason)){
+                    L.i("我点击了Home键");
+                    if (mView.getParent() != null){
+                        wm.removeView(mView);
+                    }
+                }
+            }
+        }
+    }
+
     //窗口提示
     private void showWindow() {
         //获取系统服务
@@ -140,7 +180,7 @@ public class SmsService extends Service implements View.OnClickListener{
         //定义类型
         mLayoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
         //加载布局
-        mView = View.inflate(getApplicationContext(), R.layout.sms_item, null);
+        mView = (DispathchLinearLayout) View.inflate(getApplicationContext(), R.layout.sms_item, null);
 
         tv_phone = (TextView) mView.findViewById(R.id.tv_phone);
         tv_content = (TextView) mView.findViewById(R.id.tv_content);
@@ -152,5 +192,7 @@ public class SmsService extends Service implements View.OnClickListener{
 
         //添加View到窗口
         wm.addView(mView, mLayoutParams);
+
+        mView.setDispatchKeyEventListener(this);
     }
 }
