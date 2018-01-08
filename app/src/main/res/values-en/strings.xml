@@ -43,4 +43,10 @@
     <string name="text_setting_title_1">语音播报</string>
     <string name="text_setting_title_3">检测版本</string>
     <string name="download_update">下载更新</string>
+    <string name="text_setting_content_4">扫描二维码或者条形码</string>
+    <string name="text_setting_title_4">扫一扫</string>
+    <string name="text_setting_content_5">把自己分享给朋友吧</string>
+    <string name="text_setting_title_5">二维码分享</string>
+    <string name="text_setting_title_6">我的位置</string>
+    <string name="text_setting_content_6">时刻掌握自身位置</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.administrator.smartbutler.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +76,9 @@ public class WeChatAdapter extends BaseAdapter {
         viewHolder.tv_title.setText(data.getTitle());
         viewHolder.tv_source.setText(data.getSource());
         //加载
-        PicassoUtils.loadImageViewSize(mContext, data.getImgUrl(), width/3, 200, viewHolder.iv_img);
+        if (!TextUtils.isEmpty(data.getImgUrl())){
+            PicassoUtils.loadImageViewSize(mContext, data.getImgUrl(), width/3, 200, viewHolder.iv_img);
+        }
         return convertView;
     }
 

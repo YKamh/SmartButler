@@ -20,6 +20,7 @@ import com.example.administrator.smartbutler.utils.ShareUtil;
 import com.example.administrator.smartbutler.utils.StaticClass;
 import com.kymjs.rxvolley.RxVolley;
 import com.kymjs.rxvolley.client.HttpCallback;
+import com.xys.libzxing.zxing.activity.CaptureActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,8 +36,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     //短信提醒
     private Switch sw_sms;
     //检测更新
-    private LinearLayout ll_update;
-    private TextView tv_version;
+    private LinearLayout ll_update, ll_scan, ll_qr_code, ll_my_location;
+    private TextView tv_version, tv_scan_result;
 
     private String versionName;
     private int versionCode;
@@ -65,6 +66,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         ll_update = (LinearLayout) findViewById(R.id.ll_update);
         ll_update.setOnClickListener(this);
 
+        ll_scan = (LinearLayout) findViewById(R.id.ll_scan);
+        ll_scan.setOnClickListener(this);
+
+        ll_qr_code = (LinearLayout) findViewById(R.id.ll_qr_code);
+        ll_qr_code.setOnClickListener(this);
+
+        ll_my_location = (LinearLayout) findViewById(R.id.ll_my_location);
+        ll_my_location.setOnClickListener(this);
+
         tv_version = (TextView) findViewById(R.id.tv_version);
 
         try {
@@ -73,6 +83,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         } catch (PackageManager.NameNotFoundException e) {
             tv_version.setText("检测版本");
         }
+
+        tv_scan_result = (TextView) findViewById(R.id.tv_scan_result);
+
     }
 
     @Override
@@ -95,7 +108,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.ll_update:
                 /**
-                 * 1、骑请求服务器的配置文件，拿到code
+                 * 1、请求服务器的配置文件，拿到code
                  * 2、比较
                  * 3、dialog提示
                  * 4、传值跳转到更新界面，并且把url传递过去
@@ -107,6 +120,17 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         parsingJson(t);
                     }
                 });
+                break;
+            case R.id.ll_scan:
+                //打开扫描界面扫描条形码或二维码
+                Intent openCameraIntent = new Intent(SettingActivity.this, CaptureActivity.class);
+                startActivityForResult(openCameraIntent, 0);
+                break;
+            case R.id.ll_qr_code:
+                startActivity(new Intent(this, QrCodeActivity.class));
+                break;
+            case R.id.ll_my_location:
+                startActivity(new Intent(this, LocationActivity.class));
                 break;
         }
     }
@@ -152,5 +176,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         PackageInfo info = pm.getPackageInfo(getPackageName(), 0);
         versionName = info.versionName;
         versionCode = info.versionCode;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            Bundle bundle = data.getExtras();
+            String scanResult = bundle.getString("result");
+            tv_scan_result.setText(scanResult);
+        }
     }
 }

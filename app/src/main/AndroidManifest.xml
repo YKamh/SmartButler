@@ -41,6 +41,18 @@
     <!-- 窗口权限 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
+    <!--百度地图权限-->
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    //读取系统信息，包含系统版本等信息，用作统计
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    //鉴权所需该权限获取进程列表
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 这个权限用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- 这个权限用于访问GPS定位-->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+
+
     <application
         android:name=".application.BaseApplication"
         android:allowBackup="true"
@@ -48,6 +60,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="5QhzC8byh0BbKedDkZLdwvItUeTHhMPz" />
 
         <!-- 闪屏页 -->
         <activity
@@ -97,9 +113,20 @@
 
         <!-- 短信服务 -->
         <service android:name=".service.SmsService"/>
-        <!--下载-->
-        <activity android:name=".ui.UpdateActivity"
+        <!-- 下载 -->
+        <activity
+            android:name=".ui.UpdateActivity"
             android:label="@string/download_update"/>
+        <activity android:name=".ui.QrCodeActivity">
+        </activity>
+        <activity android:name=".ui.LocationActivity">
+        </activity>
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote"/>
+
     </application>
 
 </manifest>
