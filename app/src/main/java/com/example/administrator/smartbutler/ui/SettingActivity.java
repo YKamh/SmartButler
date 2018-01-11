@@ -1,11 +1,14 @@
 package com.example.administrator.smartbutler.ui;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -36,7 +39,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     //短信提醒
     private Switch sw_sms;
     //检测更新
-    private LinearLayout ll_update, ll_scan, ll_qr_code, ll_my_location;
+    private LinearLayout ll_update, ll_scan, ll_qr_code, ll_my_location, ll_about;
     private TextView tv_version, tv_scan_result;
 
     private String versionName;
@@ -53,27 +56,31 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initView() {
+        //语音播报
         sw_speak = (Switch) findViewById(R.id.sw_speak);
         sw_speak.setOnClickListener(this);
         boolean isSpeak = ShareUtil.getBoolean(this, "isSpeak", false);
         sw_speak.setChecked(isSpeak);
-
+        //短信提醒
         sw_sms = (Switch) findViewById(R.id.sw_sms);
         sw_sms.setOnClickListener(this);
         boolean isSMS = ShareUtil.getBoolean(this, "isSMS", false);
         sw_sms.setChecked(isSMS);
-
+        //检测版本
         ll_update = (LinearLayout) findViewById(R.id.ll_update);
         ll_update.setOnClickListener(this);
-
+        //扫一扫
         ll_scan = (LinearLayout) findViewById(R.id.ll_scan);
         ll_scan.setOnClickListener(this);
-
+        //二维码分享
         ll_qr_code = (LinearLayout) findViewById(R.id.ll_qr_code);
         ll_qr_code.setOnClickListener(this);
-
+        //我的位置
         ll_my_location = (LinearLayout) findViewById(R.id.ll_my_location);
         ll_my_location.setOnClickListener(this);
+        //关于软件
+        ll_about = (LinearLayout) findViewById(R.id.ll_about);
+        ll_about.setOnClickListener(this);
 
         tv_version = (TextView) findViewById(R.id.tv_version);
 
@@ -122,15 +129,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 });
                 break;
             case R.id.ll_scan:
-                //打开扫描界面扫描条形码或二维码
-                Intent openCameraIntent = new Intent(SettingActivity.this, CaptureActivity.class);
-                startActivityForResult(openCameraIntent, 0);
+                applyCameraPermission();
                 break;
             case R.id.ll_qr_code:
                 startActivity(new Intent(this, QrCodeActivity.class));
                 break;
             case R.id.ll_my_location:
                 startActivity(new Intent(this, LocationActivity.class));
+                break;
+            case R.id.ll_about:
+                startActivity(new Intent(this, AboutActivity.class));
                 break;
         }
     }
@@ -185,6 +193,39 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             Bundle bundle = data.getExtras();
             String scanResult = bundle.getString("result");
             tv_scan_result.setText(scanResult);
+        }
+    }
+
+    public void applyCameraPermission(){
+        String []permission = {Manifest.permission.CAMERA};
+        if (Build.VERSION.SDK_INT >= 23){
+            int check = ContextCompat.checkSelfPermission(this, permission[0]);
+            // 权限是否已经 授权 GRANTED---授权  DINIED---拒绝
+            if (check == PackageManager.PERMISSION_GRANTED){
+                //开始下载
+                scanQrCode();
+            }else{
+                requestPermissions(permission, 1);
+            }
+        }else{
+            scanQrCode();
+        }
+    }
+
+    private void scanQrCode(){
+        //打开扫描界面扫描条形码或二维码
+        Intent openCameraIntent = new Intent(SettingActivity.this, CaptureActivity.class);
+        startActivityForResult(openCameraIntent, 0);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 1:
+                if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    scanQrCode();
+                }
         }
     }
 }

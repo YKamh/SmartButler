@@ -58,4 +58,6 @@
     <string name="text_setting_title_5">二维码分享</string>
     <string name="text_setting_title_6">我的位置</string>
     <string name="text_setting_content_6">时刻掌握自身位置</string>
+    <string name="text_setting_title_7">关于软件</string>
+    <string name="text_setting_content_7">www.imooc.com</string>
 </resources>

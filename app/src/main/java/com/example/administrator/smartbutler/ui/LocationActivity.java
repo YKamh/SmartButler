@@ -1,11 +1,14 @@
 package com.example.administrator.smartbutler.ui;
 
-import android.support.v7.app.AppCompatActivity;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
@@ -15,6 +18,8 @@ import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.example.administrator.smartbutler.R;
@@ -26,7 +31,7 @@ public class LocationActivity extends BaseActivity {
     private BaiduMap mBaiduMap;
 
     public LocationClient mLocationClient = null;
-    private MyLocationListener myListener = new MyLocationListener();
+    private MyLocationListener myListener = new MyLocationListener() ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +44,12 @@ public class LocationActivity extends BaseActivity {
     private void initView() {
         bmapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = bmapView.getMap();
-        //声明LocationClient类
-        mLocationClient = new LocationClient(getApplicationContext());
-        //注册监听函数
-        mLocationClient.registerLocationListener(myListener);
 
-        initLocation();
-        //开启定位
-        mLocationClient.start();
-        L.e("开始定位");
+        applyLocationPermission();
+    }
+
+    private void starLocation(){
+
     }
 
     private void initLocation(){
@@ -92,6 +94,14 @@ public class LocationActivity extends BaseActivity {
         option.setEnableSimulateGps(false);
         //可选，设置是否需要过滤GPS仿真结果，默认需要，即参数为false
 
+        option.setIsNeedAddress(true);
+        //可选，是否需要地址信息，默认为不需要，即参数为false
+        //如果开发者需要获得当前点的地址信息，此处必须为true
+
+        option.setIsNeedLocationDescribe(true);
+        //可选，是否需要位置描述信息，默认为不需要，即参数为false
+        //如果开发者需要获得当前点的位置信息，此处必须为true
+
         mLocationClient.setLocOption(option);
         //mLocationClient为第二步初始化过的LocationClient对象
         //需将配置好的LocationClientOption对象，通过setLocOption方法传递给LocationClient对象使用
@@ -126,6 +136,15 @@ public class LocationActivity extends BaseActivity {
             //以下只列举部分获取经纬度相关（常用）的结果信息
             //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
 
+            String addr = location.getAddrStr();    //获取详细地址信息
+            String country = location.getCountry();    //获取国家
+            String province = location.getProvince();    //获取省份
+            String city = location.getCity();    //获取城市
+            String district = location.getDistrict();    //获取区县
+            String street = location.getStreet();    //获取街道信息
+
+            String locationDescribe = location.getLocationDescribe();    //获取位置描述信息
+
             double latitude = location.getLatitude();    //获取纬度信息
             double longitude = location.getLongitude();    //获取经度信息
             float radius = location.getRadius();    //获取定位精度，默认值为0.0f
@@ -147,15 +166,66 @@ public class LocationActivity extends BaseActivity {
 
             //绘制图层
             //定义Maker坐标点
-            LatLng point = new LatLng(39.963175, 116.400244);
+            LatLng point = new LatLng(latitude, longitude);
             //构建Marker图标
-            BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.ic_location);
+            BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.timeline_green);
             //构建MarkerOption，用于在地图上添加Marker
             OverlayOptions option = new MarkerOptions()
                     .position(point)
                     .icon(bitmap);
             //在地图上添加Marker，并显示
             mBaiduMap.addOverlay(option);
+        }
+    }
+
+    public void applyLocationPermission(){
+        String []permission = {Manifest.permission.ACCESS_COARSE_LOCATION};
+        if (Build.VERSION.SDK_INT >= 23){
+            int check = ContextCompat.checkSelfPermission(this, permission[0]);
+            // 权限是否已经 授权 GRANTED---授权  DINIED---拒绝
+            if (check == PackageManager.PERMISSION_GRANTED){
+                myListener = new MyLocationListener();
+                //声明LocationClient类
+                mLocationClient = new LocationClient(getApplicationContext());
+                //注册监听函数
+                mLocationClient.registerLocationListener(myListener);
+                initLocation();
+                //开启定位
+                mLocationClient.start();
+                L.e("开始定位");
+            }else{
+                requestPermissions(permission, 1);
+            }
+        }else{
+            myListener = new MyLocationListener();
+            //声明LocationClient类
+            mLocationClient = new LocationClient(getApplicationContext());
+            //注册监听函数
+            mLocationClient.registerLocationListener(myListener);
+            initLocation();
+            //开启定位
+            mLocationClient.start();
+            L.e("开始定位");
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 1:
+                if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    myListener = new MyLocationListener();
+                    //声明LocationClient类
+                    mLocationClient = new LocationClient(getApplicationContext());
+                    //注册监听函数
+                    mLocationClient.registerLocationListener(myListener);
+                    initLocation();
+                    //开启定位
+                    mLocationClient.start();
+                    L.e("开始定位");
+                }
+                break;
         }
     }
 }
